@@ -1,3 +1,4 @@
+import RPi.GPIO as GPIO
 from command_parser import read_command
 
 TEMP = 0
