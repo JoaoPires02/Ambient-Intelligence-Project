@@ -10,8 +10,8 @@ PROJ_IO = 24
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(LIGHT_IO[0], GPIO.OUT)
-GPIO.setup(LIGHT_IO[1], OUT)
-GPIO.setup(PROJ_IO, OUT)
+GPIO.setup(LIGHT_IO[1], GPIO.OUT)
+GPIO.setup(PROJ_IO, GPIO.OUT)
 
 def change_temp(t):
     print('Temperature changed to: ' + str(t))
