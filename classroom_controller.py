@@ -4,6 +4,14 @@ TEMP = 0
 LIGHT = 1
 PROJ = 2
 
+LIGHT_IO = [18, 23]
+PROJ_IO = 24
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(LIGHT_IO[0], GPIO.OUT)
+GPIO.setup(18, LIGHT_IO[1].OUT)
+GPIO.setup(18, PROJ_IO.OUT)
+
 def change_temp(t):
     print('Temperature changed to: ' + str(t))
 
@@ -12,10 +20,16 @@ def set_light(light_n, state):
     if state: print('on')
     else: print('off')
 
+    if state: GPIO.output(LIGHT_IO[light_n], GPIO.HIGH)
+    else: GPIO.output(LIGHT_IO[light_n], GPIO.LOW)
+
 def set_proj(state):
     print('Projector turned ', end='')
     if state: print('on')
     else: print('off')
+
+    if state: GPIO.output(PROJ_IO, GPIO.HIGH)
+    else: GPIO.output(PROJ_IO, GPIO.LOW)
 
 while True:
     try:
