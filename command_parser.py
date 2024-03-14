@@ -80,7 +80,7 @@ temp_sensor_parser.add_argument('sensor_n', type=int,
 # Light Sensor Parser Definition
 light_sensor_parser = argparse.ArgumentParser(exit_on_error=False)
 
-light_sensor_parser.add_argument('value', type=float,
+light_sensor_parser.add_argument('value', type=int,
                     help='Light level read by sensor')
 light_sensor_parser.add_argument('sensor_n', type=int,
                     help='Number of the sensor')
@@ -102,13 +102,16 @@ def read_sensor_info():
         print('Error: '.format(err.args))
 
     raw_arg = msg.split(' ', 1)
-    args = parser.parse_args(raw_arg)
+    args = sensors_parser.parse_args(raw_arg)
     sensor = args.sensor
     args = args.args
 
     if sensor == 'T':
+        args = temp_sensor_parser.parse_args(args.split(' '))
         return (0, args.value, args.sensor_n)
-    if sensor == 'L':
+    elif sensor == 'L':
+        args = light_sensor_parser.parse_args(args.split(' '))
         return (1, args.value, args.sensor_n)
-    if sensor == 'B':
+    elif sensor == 'B':
+        args = button_parser.parse_args(args.split(' '))
         return (2, args.button_n)
