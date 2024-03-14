@@ -35,8 +35,8 @@ void loop() {
         int light_val2 = analogRead(LIGHT_2);
         int light_val3 = analogRead(LIGHT_3);
 
-        sendTemp(temp_val1, 1);
-        sendTemp(temp_val2, 2);
+        sendTemp(temp_val1, 0);
+        sendTemp(temp_val2, 1);
         sendLightLevel(light_val1, 0);
         sendLightLevel(light_val2, 1);
         sendLightLevel(light_val3, 2);

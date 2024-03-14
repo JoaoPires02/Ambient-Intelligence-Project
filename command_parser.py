@@ -1,4 +1,5 @@
 import argparse
+import serial
 
 # Main parser definition:
 parser = argparse.ArgumentParser(exit_on_error=False)
@@ -21,13 +22,13 @@ light_parser = argparse.ArgumentParser(exit_on_error=False)
 light_parser.add_argument('light_nr', type=int,
                           help='Number of the light')
 light_parser.add_argument('state', type=str, choices=['on', 'off'],
-                          help='On of off')
+                          help='On or off')
 
 # Projector parser definition:
 proj_parser = argparse.ArgumentParser(exit_on_error=False)
 
 proj_parser.add_argument('state', type=str, choices=['on', 'off'],
-                          help='On of off')
+                          help='On or off')
 
 
 def read_command():
@@ -60,3 +61,54 @@ def read_command():
         except argparse.ArgumentError as e:
             print("Error:", e)
         return (2, args.state == 'on')
+    
+
+# Sensors Parser Definition
+sensors_parser = argparse.ArgumentParser(exit_on_error=False)
+
+sensors_parser.add_argument('sensor', type=str, help='Sensor type')
+sensors_parser.add_argument('args', type=str, help='All arguments related to the command')
+
+# Temperature Sensor Parser Definition
+temp_sensor_parser = argparse.ArgumentParser(exit_on_error=False)
+
+temp_sensor_parser.add_argument('value', type=float,
+                    help='Temperature read by sensor')
+temp_sensor_parser.add_argument('sensor_n', type=int,
+                    help='Number of the sensor')
+
+# Light Sensor Parser Definition
+light_sensor_parser = argparse.ArgumentParser(exit_on_error=False)
+
+light_sensor_parser.add_argument('value', type=float,
+                    help='Light level read by sensor')
+light_sensor_parser.add_argument('sensor_n', type=int,
+                    help='Number of the sensor')
+
+# Button Parser Definition
+button_parser = argparse.ArgumentParser(exit_on_error=False)
+
+button_parser.add_argument('button_n', type=int,
+                    help='Number of the button pressed')
+
+
+def read_sensor_info():
+    ser = serial.Serial('/dev/ttyACM0')
+
+    try:
+        msg = ser.readline()
+        print(msg)
+    except Exception as err:
+        print('Error: '.format(err.args))
+
+    raw_arg = msg.split(' ', 1)
+    args = parser.parse_args(raw_arg)
+    sensor = args.sensor
+    args = args.args
+
+    if sensor == 'T':
+        return (0, args.value, args.sensor_n)
+    if sensor == 'L':
+        return (1, args.value, args.sensor_n)
+    if sensor == 'B':
+        return (2, args.button_n)
