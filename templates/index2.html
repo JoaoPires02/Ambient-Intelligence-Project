@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name = "viewport" content = "with=device-width, initial-scale=1.0">
+        <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <title>Room Login</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/style2.css') }}">
+        <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
+        <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    </head>
+    <body>
+        <section class="header">
+            <nav>
+                <a href="index2.html"><img src="{{ url_for('static', filename='IST_Logo.png') }}"></a>
+                <div class="nav-links" id="navLinks">
+                    <i class="fa fa-times" onclick="hideMenu()"></i>
+                    <ul>
+                        <li><a href="#fenix">FENIX</a></li>
+                    </ul>
+                </div>
+                <i class="fa fa-bars" onclick="showMenu()""></i>
+            </nav>
+        </section>
+        <section class="text-box">
+            <h1>WHERE IS YOUR CLASS?</h1>
+            <p>Insert your class credentials.</p>
+            <form action="/submit-codes" method="POST">
+                <div><input type="text" name="classroom_code" placeholder="Enter Classroom Code"></div>
+                <div><input type="text" name="school_code" placeholder="Enter School Code"></div>
+                <div>
+                    <button type="submit" class="hero-btn">CONFIRM</button>
+                </div>
+            </form>
+        </section>
+        
+        <!-------JavaScript para mostrar menu no telemovel-------->
+        <script>
+            var navLinks = document.getElementById("navLinks");
+        
+            function showMenu() {
+                navLinks.style.right = "0";
+            }
+        
+            function hideMenu() {
+                navLinks.style.right = "-200px";
+            }
+        
+            // Smooth scroll function
+            function scrollToSection(sectionId) {
+                var section = document.getElementById(sectionId);
+                if (section) {
+                    window.scrollTo({
+                        top: section.offsetTop,
+                        behavior: "smooth"
+                    });
+                }
+            }
+        
+            // Add an event listener for each navigation link
+            var navigationLinks = document.querySelectorAll('.nav-links ul li a');
+            navigationLinks.forEach(function(link) {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    var sectionId = link.getAttribute('href').substring(1); // Remove the # from the href
+                    scrollToSection(sectionId);
+                });
+            });
+        </script>
+    </body>
+</html>

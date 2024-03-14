@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name = "viewport" content = "with=device-width, initial-scale=1.0">
+        <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <title>Room 123</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/room.css') }}">
+        <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+        <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    </head>
+    <body>
+        <section class="header">
+            <nav>
+                <a href="index2.html"><img src="{{ url_for('static', filename='IST_Logo.png') }}"></a>
+                <div class="nav-links" id="navLinks">
+                    <i class="fa fa-times" onclick="hideMenu()"></i>
+                    <ul>
+                        <li><a href="#fenix">FENIX</a></li>
+                    </ul>
+                </div>
+                <i class="fa fa-bars" onclick="showMenu()""></i>
+            </nav>
+        </section>
+        <section class="room">
+            <div class="box">
+                <h1>Break Time</h1>
+                <button type="button" name="ask_break" class="hero-btn">ASK</button>
+                <h1>Temperature Change</h1>
+                <button type="button" name="temp_up" class="hero-btn">INCREASE</button>
+                <button type="button" name="temp_down" class="hero-btn">DECREASE</button>
+            </div>
+            <div class="box">
+                <h1>Ask a question or give feedback</h1>
+                <form action="/ask_question" method="POST">
+                    <div><textarea name="question_asked" placeholder="Type your question here..."></textarea></div>
+                    <div>
+                        <button type="submit" class="hero-btn">SEND</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+        
+        <!-------JavaScript para mostrar menu no telemovel-------->
+        <script>
+            var navLinks = document.getElementById("navLinks");
+        
+            function showMenu() {
+                navLinks.style.right = "0";
+            }
+        
+            function hideMenu() {
+                navLinks.style.right = "-200px";
+            }
+        
+            // Smooth scroll function
+            function scrollToSection(sectionId) {
+                var section = document.getElementById(sectionId);
+                if (section) {
+                    window.scrollTo({
+                        top: section.offsetTop,
+                        behavior: "smooth"
+                    });
+                }
+            }
+        
+            // Add an event listener for each navigation link
+            var navigationLinks = document.querySelectorAll('.nav-links ul li a');
+            navigationLinks.forEach(function(link) {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    var sectionId = link.getAttribute('href').substring(1); // Remove the # from the href
+                    scrollToSection(sectionId);
+                });
+            });
+        </script>
+    </body>
+</html>
