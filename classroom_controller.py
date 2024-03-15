@@ -88,16 +88,22 @@ def sensor_commands():
             command = command_parser.read_sensors_info()
             if command[0] == TEMP:
                 current_temp[command[2]] = command[1]
+                print('TEMP' + str(command[2]) + ' = ' + current_temp[command[1]])
 
             elif command[0] == LIGHT:
                 current_light_level[command[2]] = command[1]
+                print('LIGHT' + str(command[2]) + ' = ' + current_light_level[command[1]])
 
             elif command[0] == BUTTON:
                 student_present[command[1]] = not(student_present[command[1]])
+                print('STUDENT_PRESENT = ' + student_present[command[1]])
+
         except Exception as e:
             pass
 
 commands_thread = threading.Thread(target=manual_commands, name='Thread 1')
+sensors_thread = threading.Thread(target=sensor_commands, name='Thread 2')
 commands_thread.start()
+sensors_thread.start()
 
     

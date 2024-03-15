@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #define BUTTON_1 13 // Row 1
-#define BUTTON_2 2  // Row 1
+#define BUTTON_2 12 // Row 1
 #define BUTTON_3 4  // Row 2
 #define BUTTON_4 3  // Row 2
 
