@@ -8,12 +8,13 @@ LIGHT = 1
 PROJ = 2
 BUTTON = 2
 
-LIGHT_IO = [18, 23]
-PROJ_IO = 24
+LIGHT_IO = [18, 23, 24]
+PROJ_IO = 25
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(LIGHT_IO[0], GPIO.OUT)
 GPIO.setup(LIGHT_IO[1], GPIO.OUT)
+GPIO.setup(LIGHT_IO[2], GPIO.OUT)
 GPIO.setup(PROJ_IO, GPIO.OUT)
 
 students = {'99090':'João Pires',
