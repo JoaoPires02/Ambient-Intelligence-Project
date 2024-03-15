@@ -1,10 +1,9 @@
 import argparse
-import serial
 
 # Main parser definition:
 parser = argparse.ArgumentParser(exit_on_error=False)
 
-possible_commands = ['temp', 'light', 'proj']
+possible_commands = ['temp', 'light', 'proj', 'get']
 parser.add_argument('command', type=str, choices = possible_commands,
                     help='Command to be executed')
 parser.add_argument('args', type=str,
@@ -29,6 +28,13 @@ proj_parser = argparse.ArgumentParser(exit_on_error=False)
 
 proj_parser.add_argument('state', type=str, choices=['on', 'off'],
                           help='On or off')
+
+# Get parser definition:
+get_parser = argparse.ArgumentParser(exit_on_error=False)
+
+get_choices = ['temp', 'light']
+get_parser.add_argument('operation', type=str, choices=get_choices,
+                        help='What you want to get')
 
 
 def read_command():
@@ -62,6 +68,13 @@ def read_command():
             print("Error:", e)
         return (2, args.state == 'on')
     
+    elif command == 'get':
+        try:
+            args = get_parser.parse_args(args.split(' '))
+        except argparse.ArgumentError as e:
+            print("Error:", e)
+        return (3, args.operation)
+    
 
 # Sensors Parser Definition
 sensors_parser = argparse.ArgumentParser(exit_on_error=False)
@@ -92,15 +105,7 @@ button_parser.add_argument('button_n', type=int,
                     help='Number of the button pressed')
 
 
-def read_sensor_info():
-    ser = serial.Serial('/dev/ttyACM0')
-
-    try:
-        msg = ser.readline()
-        print(msg)
-    except Exception as err:
-        print('Error: '.format(err.args))
-
+def read_sensor_info(msg):
     raw_arg = msg.split(' ', 1)
     args = sensors_parser.parse_args(raw_arg)
     sensor = args.sensor
