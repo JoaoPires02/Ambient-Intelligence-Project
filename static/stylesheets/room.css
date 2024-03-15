@@ -179,3 +179,9 @@ h3{
     margin: 10px 0;
 }
 
+#attendance-list {
+    max-width: 200px; /* Adjust as needed */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

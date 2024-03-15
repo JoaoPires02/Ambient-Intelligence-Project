@@ -9,6 +9,45 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
         <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+        <script>
+            function updateAttendanceList() {
+                fetch('/get-attendance-list')
+                .then(response => response.json())
+                .then(data => {
+                    // Clear the previous student names
+                    document.getElementById('attendance-list').innerHTML = '';
+                    // Iterate through the student names and create HTML elements
+                    data.students.forEach(student => {
+                        const studentElement = document.createElement('p');
+                        studentElement.textContent = student;
+                        document.getElementById('attendance-list').appendChild(studentElement);
+                    });
+                });
+            }
+
+            function updatePresences() {
+                fetch('/get-presences')
+                .then(response => response.json())
+                .then(data => {
+                    // Clear the previous student names
+                    document.getElementById('presences').innerHTML = '';
+                    // Iterate through the student names and create HTML elements
+                    data.presences.forEach(presence => {
+                        const presenceElement = document.createElement('p');
+                        presenceElement.textContent = presence;
+                        document.getElementById('presences').appendChild(presenceElement);
+                    });
+                });
+            }
+    
+            // Call updateX function initially
+            updateAttendanceList();
+            updatePresences();
+    
+            // Call updateX function periodically to fetch updated value
+            setInterval(updateAttendanceList, 3000); // Update every second (adjust as needed)
+            setInterval(updateAttendanceList, 3000);
+        </script>
     </head>
     <body>
         <section class="header">
@@ -40,11 +79,11 @@
                 <div class="row">
                     <div class="column">
                         <h2>Students</h2>
-                        <p>Data..</p>
+                        <p><span id="attendance-list"></span></p>
                     </div>
                     <div class="column">
                         <h2>Presence</h2>
-                        <p>Data..</p>
+                        <p><span id="presences"></span></p>
                     </div>
                 </div>
             </div>
