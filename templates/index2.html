@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/style2.css') }}">
         <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
         <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     </head>
     <body>
@@ -25,9 +26,9 @@
         <section class="text-box">
             <h1>WHERE IS YOUR CLASS?</h1>
             <p>Insert your class credentials.</p>
-            <form action="/submit-codes" method="POST">
-                <div><input type="text" name="classroom_code" placeholder="Enter Classroom Code"></div>
-                <div><input type="text" name="school_code" placeholder="Enter School Code"></div>
+            <form id="form-login" action="/submit-codes" method="POST">
+                <div><input class="input is-small" type="text" name="classroom_code" placeholder="Enter Classroom Code"></div>
+                <div><input class="input is-small" type="text" name="school_code" placeholder="Enter School Code"></div>
                 <div>
                     <button type="submit" class="hero-btn">CONFIRM</button>
                 </div>

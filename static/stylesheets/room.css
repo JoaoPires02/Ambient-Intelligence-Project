@@ -75,13 +75,19 @@ nav img{
     border-radius: 10px;
 }
 
-.box textarea {
+#student-feed textarea {
     width: 100%; /* Set the width to 100% to fill the available space */
     min-height: 100px; /* Set a minimum height for the textarea */
     padding: 10px; /* Add padding to the textarea */
     font-size: 16px; /* Adjust the font size as needed */
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
     resize: none;
+}
+
+#teacher-control input {
+    width: 50%;
+    display: inline-block;
+    height: 45px;
 }
 
 .column {
@@ -109,6 +115,7 @@ nav img{
 .hero-btn{
     margin-bottom: 25px;
     display: inline-block;
+    height: 45px;
     text-decoration: none;
     color: #000000;
     border: 1px solid #000000;

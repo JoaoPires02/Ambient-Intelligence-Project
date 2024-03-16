@@ -21,6 +21,13 @@ def get_simulated_temp():
     temp = classroom_controller.sim_temp
     return jsonify({'temp': temp})
 
+@app.route('/update-temperature', methods=['POST'])
+def update_temperature():
+    if 'teacher_temp' in request.form:
+        new_temp = request.form['teacher_temp']
+        classroom_controller.ideal_temp = float(new_temp)
+    print(classroom_controller.ideal_temp)
+    return redirect(url_for('room123teacher'))
 
 @app.route('/get-attendance-list')
 def get_attendance_list():
