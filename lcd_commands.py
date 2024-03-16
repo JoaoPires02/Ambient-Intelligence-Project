@@ -42,6 +42,9 @@ def close_lcd():
     lcd.close(clear=True)
     GPIO.cleanup()
 
+def clear():
+    lcd.clear()
+
 def test_lcd():
     try:
         init_lcd()

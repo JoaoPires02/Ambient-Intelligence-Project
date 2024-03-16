@@ -135,6 +135,7 @@ def update_sim_temp():
         time.sleep(1)
 
 def lcd_manager():
+    lcd.clear()
     try:
         lcd.init_lcd()
         time.sleep(1)
