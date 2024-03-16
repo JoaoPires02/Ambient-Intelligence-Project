@@ -36,6 +36,7 @@ def get_presences():
             presences_str += ["Missing"]
         elif i == True:
             presences_str += ["Present"]
+    print(classroom_controller.student_present)
     return jsonify({'presences': presences_str})
 
 
@@ -50,7 +51,12 @@ def submit_codes():
     print(classroom_code)
     print(school_code)
     if classroom_code == '123':
-        if school_code == '123':
+        students_ids = list(classroom_controller.students.keys())
+        print(students_ids)
+        print(school_code)
+        if school_code in students_ids:
+            ind = students_ids.index(school_code)
+            classroom_controller.student_present[ind] = True
             return redirect(url_for('room123student'))
         elif school_code == 't':
             return redirect(url_for('room123teacher'))
