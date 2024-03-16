@@ -43,6 +43,9 @@ automatic_lights = True
 light_on = [False, False, True]
 button_pressed = False
 
+web_command = ''
+new_web_command = False
+
 def get_light_intensity(n):
     brightness = current_light_level[n]
     if brightness < 200:
@@ -116,6 +119,33 @@ def manual_commands():
                 get_info(command[1])
 
         except Exception as e:
+            pass
+
+def web_commands():
+    global new_web_command
+    global web_command
+    while True:
+        if new_web_command:
+            new_web_command = False
+            try:
+                command = command_parser.read_web_command(web_command)
+                if command[0] == TEMP:
+                    change_temp(command[1])
+
+                elif command[0] == LIGHT:
+                    set_light(command[1], command[2])
+
+                elif command[0] == PROJ:
+                    set_proj(command[1])
+
+                elif command[0] == GET:
+                    get_info(command[1])
+
+            except Exception as e:
+                print('Web Command Error')
+        
+        else:
+            time.sleep(0.02)
             pass
 
 def sensor_commands():
@@ -203,11 +233,13 @@ sensors_thread = threading.Thread(target=sensor_commands, name='Thread 2')
 update_temp_thread = threading.Thread(target=update_sim_temp, name='Thread 3')
 lcd_thread = threading.Thread(target=lcd_manager, name='Thread 4')
 light_control_thread = threading.Thread(target=light_control, name='Thread 5')
+web_commands_thread = threading.Thread(target=web_commands, name='Thread 6')
 
 commands_thread.start()
 sensors_thread.start()
 update_temp_thread.start()
 lcd_thread.start()
 light_control_thread.start()
+web_commands_thread.start()
 
     

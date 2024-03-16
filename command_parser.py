@@ -37,16 +37,7 @@ get_parser.add_argument('operation', type=str, choices=get_choices,
                         help='What you want to get')
 
 
-def read_command():
-    raw_arg = input('> ').split(' ', 1)
-    try:
-        args = parser.parse_args(raw_arg)
-    except Exception as e:
-        print("Error:", e)
-    
-    command = args.command
-    args = args.args
-
+def execute_command(command, args):
     if command == 'temp':
         try:
             args = temp_parser.parse_args(args.split(' '))
@@ -74,6 +65,31 @@ def read_command():
         except argparse.ArgumentError as e:
             print("Error:", e)
         return (3, args.operation)
+    
+def read_command():
+    raw_arg = input('> ').split(' ', 1)
+    try:
+        args = parser.parse_args(raw_arg)
+    except Exception as e:
+        print("Error:", e)
+    
+    command = args.command
+    args = args.args
+
+    return execute_command(command, args)
+
+def read_web_command(c):
+    raw_arg = c.split(' ', 1)
+    try:
+        args = parser.parse_args(raw_arg)
+    except Exception as e:
+        print("Error:", e)
+    
+    command = args.command
+    args = args.args
+
+    return execute_command(command, args)
+
     
 
 # Sensors Parser Definition

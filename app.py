@@ -25,7 +25,8 @@ def get_simulated_temp():
 def update_temperature():
     if 'teacher_temp' in request.form:
         new_temp = request.form['teacher_temp']
-        classroom_controller.ideal_temp = float(new_temp)
+        classroom_controller.web_command = 'temp '+ new_temp
+        classroom_controller.new_web_command = True
     print(classroom_controller.ideal_temp)
     return redirect(url_for('room123teacher'))
 
