@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 import command_parser
+import lcd_commands as lcd
 import threading
 import serial
 import time
@@ -30,6 +31,12 @@ students = {'99090':'João Pires',
 
 present_students = [] #Only IDs
 
+sim_temp = 20
+ideal_temp = 22
+current_temp = [0, 0]
+current_light_level = [0, 0, 0]
+student_present = [False, False, False, False]
+
 def new_student(id):
     if id not in students:
         print('Error: you don\'t belong here')
@@ -45,15 +52,12 @@ def student_list():
         else:
             res += ' - Missing\n'
 
-current_temp = [0, 0]
-current_light_level = [0, 0, 0]
-student_present = [False, False, False, False]
-
 def get_current_temp():
     return sum(current_temp) / len(current_temp)
 
 def change_temp(t):
-    print('Temperature changed to: ' + str(t))
+    global ideal_temp
+    ideal_temp = float(format(t, '.1f'))
 
 def set_light(light_n, state):
     print('Light number ' + str(light_n) + ' turned ', end='')
@@ -118,10 +122,38 @@ def sensor_commands():
                 student_present[command[1]] = not(student_present[command[1]])
                 #print('STUDENT' + str(command[1]) + '_PRESENT = ' + str(student_present[command[1]]))
 
+def update_sim_temp():
+    while True:
+        global ideal_temp
+        global sim_temp
+
+        if sim_temp < ideal_temp:
+            sim_temp += 0.1
+        elif sim_temp > ideal_temp:
+            sim_temp -= 0.1
+        sim_temp = float(format(sim_temp, '.1f'))
+        time.sleep(1)
+
+def lcd_manager():
+    try:
+        lcd.init_lcd()
+        time.sleep(1)
+        while True:
+            lcd.update_lcd(get_current_temp(), ideal_temp, sim_temp)
+    
+    except KeyboardInterrupt:
+        pass
+    finally:
+        lcd.close_lcd()
 
 commands_thread = threading.Thread(target=manual_commands, name='Thread 1')
 sensors_thread = threading.Thread(target=sensor_commands, name='Thread 2')
+update_temp_thread = threading.Thread(target=update_sim_temp, name='Thread 3')
+lcd_thread = threading.Thread(target=lcd_manager, name='Thread 4')
+
 commands_thread.start()
 sensors_thread.start()
+update_temp_thread.start()
+lcd_thread.start()
 
     
