@@ -16,6 +16,12 @@ def room123student():
 def room123teacher():
     return render_template('room123teacher.html')
 
+@app.route('/get-simulated-temp')
+def get_simulated_temp():
+    temp = classroom_controller.sim_temp
+    return jsonify({'temp': temp})
+
+
 @app.route('/get-attendance-list')
 def get_attendance_list():
     names = list(classroom_controller.students.values()) 

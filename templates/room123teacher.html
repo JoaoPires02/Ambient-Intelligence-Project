@@ -10,6 +10,17 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
         <link rel="icon" href="data:;base64,iVBORw0KGgo=">
         <script>
+            function updateSimTemp() {
+            fetch('/get-simulated-temp')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('sim-temp').innerHTML = '';
+                    // Update the HTML element displaying the temperature
+                    document.getElementById('sim-temp').innerText = data.temp;
+                });
+            }
+
+
             function updateAttendanceList() {
                 fetch('/get-attendance-list')
                 .then(response => response.json())
@@ -41,10 +52,12 @@
             }
     
             // Call updateX function initially
+            updateSimTemp();
             updateAttendanceList();
             updatePresences();
     
             // Call updateX function periodically to fetch updated value
+            setInterval(updateSimTemp, 3000); // Update every second (adjust as needed)
             setInterval(updateAttendanceList, 3000); // Update every second (adjust as needed)
             setInterval(updateAttendanceList, 3000);
         </script>
@@ -67,7 +80,7 @@
                 <h1>Light Change</h1>
                 <button type="button" name="temp_up" class="hero-btn">UP</button>
                 <button type="button" name="temp_down" class="hero-btn">DOWN</button>
-                <h1>Temperature Change</h1>
+                <h1>Temperature Change (<span id="sim-temp"></span>ºC)</h1>
                 <button type="button" name="temp_up" class="hero-btn">UP</button>
                 <button type="button" name="temp_down" class="hero-btn">DOWN</button>
             </div>

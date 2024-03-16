@@ -9,6 +9,24 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
         <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+        <script>
+            function updateSimTemp() {
+            fetch('/get-simulated-temp')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('sim-temp').innerHTML = '';
+                    // Update the HTML element displaying the temperature
+                    document.getElementById('sim-temp').innerText = data.temp;
+                });
+            }
+
+            // Call updateX function initially
+            updateSimTemp();
+
+            // Call updateX function periodically to fetch updated value
+            setInterval(updateSimTemp, 3000); // Update every second (adjust as needed)
+
+        </script>
     </head>
     <body>
         <section class="header">
@@ -27,7 +45,7 @@
             <div class="box">
                 <h1>Break Time</h1>
                 <button type="button" name="ask_break" class="hero-btn">ASK</button>
-                <h1>Temperature Change</h1>
+                <h1>Temperature Change (<span id="sim-temp"></span>ºC)</h1>
                 <button type="button" name="temp_up" class="hero-btn">INCREASE</button>
                 <button type="button" name="temp_down" class="hero-btn">DECREASE</button>
             </div>
