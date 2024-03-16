@@ -68,8 +68,9 @@ nav img{
 
 .box {
     margin: 20px;
-    height: 220px;
-    width: 400px;
+    min-height: 30vh; /* Set minimum height to 30% of the viewport height */
+    max-height: 70vh; /* Set maximum height to 70% of the viewport height */
+    width: 30%; /* Set width to 80% of the parent container */
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 10px;
