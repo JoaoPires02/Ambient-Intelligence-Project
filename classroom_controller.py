@@ -10,6 +10,7 @@ LIGHT = 1
 PROJ = 2
 BUTTON = 2
 GET = 3
+VOTE = 4
 
 LIGHT_IO = [18, 23, 24]
 PROJ_IO = 25
@@ -45,6 +46,21 @@ button_pressed = False
 
 web_command = ''
 new_web_command = False
+
+votes = [False, False, False, False]
+
+def get_votes_percent():
+    global votes
+    total = 0
+    for e in votes:
+        if e: total += 1
+    
+    return total / len(votes)
+
+def reset_votes():
+    global votes
+    for i in range(len(votes)):
+        votes[i] = False
 
 def get_light_intensity(n):
     brightness = current_light_level[n]
@@ -102,6 +118,11 @@ def get_info(arg):
         print('Light 1: ' + str(current_light_level[1]))
         print('Light 2: ' + str(current_light_level[2]))
 
+def student_vote(id):
+    index = list(students.keys()).index(id)
+    votes[index] = True
+    print(votes)
+
 def manual_commands():
     while True:
         try:
@@ -118,8 +139,14 @@ def manual_commands():
             elif command[0] == GET:
                 get_info(command[1])
 
+            elif command[0] == VOTE:
+                if command[1] == 'reset':
+                    reset_votes()
+                else:
+                    student_vote(command[1])
+
         except Exception as e:
-            pass
+            print('Manual Command Error')
 
 def web_commands():
     global new_web_command
@@ -140,6 +167,12 @@ def web_commands():
 
                 elif command[0] == GET:
                     get_info(command[1])
+
+                elif command[0] == VOTE:
+                    if command[1] == 'reset':
+                        reset_votes()
+                    else:
+                        student_vote(command[1])
 
             except Exception as e:
                 print('Web Command Error')

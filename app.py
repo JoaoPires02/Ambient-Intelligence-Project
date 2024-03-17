@@ -30,6 +30,36 @@ def update_temperature():
     print(classroom_controller.ideal_temp)
     return redirect(url_for('room123teacher'))
 
+@app.route('/update-light', methods=['POST'])
+def update_light():
+    data = request.json
+    light_nr = data.get('light_nr')
+    state = data.get('state')
+    classroom_controller.web_command = 'light ' + light_nr + ' ' + state
+    classroom_controller.new_web_command = True
+    return redirect(url_for('room123teacher'))
+
+@app.route('/update-proj', methods=['POST'])
+def update_proj():
+    data = request.json
+    state = data.get('state')
+    classroom_controller.web_command = 'proj ' + state
+    classroom_controller.new_web_command = True
+    return redirect(url_for('room123teacher'))
+
+
+@app.route('/get-updated-votes')
+def get_updated_votes():
+    votes = classroom_controller.get_votes_percent()
+    return jsonify({'votes': votes})
+
+@app.route('/reset-votes', methods=['POST'])
+def reset_votes():
+    # Reset the votes
+    classroom_controller.web_command = 'vote reset'
+    classroom_controller.new_web_command = True
+    return jsonify({'success': True})
+
 @app.route('/get-attendance-list')
 def get_attendance_list():
     names = list(classroom_controller.students.values()) 
@@ -44,7 +74,6 @@ def get_presences():
             presences_str += ["Missing"]
         elif i == True:
             presences_str += ["Present"]
-    print(classroom_controller.student_present)
     return jsonify({'presences': presences_str})
 
 
@@ -55,18 +84,18 @@ def favicon():
 @app.route('/submit-codes', methods=['POST'])
 def submit_codes():
     classroom_code = request.form['classroom_code']
-    school_code = request.form['school_code']
+    student_id = request.form['student_id']
     print(classroom_code)
-    print(school_code)
+    print(student_id)
     if classroom_code == '123':
         students_ids = list(classroom_controller.students.keys())
         print(students_ids)
-        print(school_code)
-        if school_code in students_ids:
-            ind = students_ids.index(school_code)
+        print(student_id)
+        if student_id in students_ids:
+            ind = students_ids.index(student_id)
             classroom_controller.student_present[ind] = True
             return redirect(url_for('room123student'))
-        elif school_code == 't':
+        elif student_id == 't':
             return redirect(url_for('room123teacher'))
     else:
         # Redirect to some other page if the classroom code is not 12345

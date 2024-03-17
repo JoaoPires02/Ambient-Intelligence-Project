@@ -3,7 +3,7 @@ import argparse
 # Main parser definition:
 parser = argparse.ArgumentParser(exit_on_error=False)
 
-possible_commands = ['temp', 'light', 'proj', 'get']
+possible_commands = ['temp', 'light', 'proj', 'get', 'vote']
 parser.add_argument('command', type=str, choices = possible_commands,
                     help='Command to be executed')
 parser.add_argument('args', type=str,
@@ -36,6 +36,12 @@ get_choices = ['temp', 'light']
 get_parser.add_argument('operation', type=str, choices=get_choices,
                         help='What you want to get')
 
+# Vote parser definition:
+vote_parser = argparse.ArgumentParser(exit_on_error=False)
+
+vote_parser.add_argument('student', type=str,
+                        help='Student number')
+
 
 def execute_command(command, args):
     if command == 'temp':
@@ -66,6 +72,13 @@ def execute_command(command, args):
             print("Error:", e)
         return (3, args.operation)
     
+    elif command == 'vote':
+        try:
+            args = vote_parser.parse_args(args.split(' '))
+        except argparse.ArgumentError as e:
+            print("Error:", e)
+        return (4, args.student)
+    
 def read_command():
     raw_arg = input('> ').split(' ', 1)
     try:
@@ -79,6 +92,7 @@ def read_command():
     return execute_command(command, args)
 
 def read_web_command(c):
+    print(c)
     raw_arg = c.split(' ', 1)
     try:
         args = parser.parse_args(raw_arg)
@@ -91,6 +105,8 @@ def read_web_command(c):
     return execute_command(command, args)
 
     
+
+# --------------------------------------------------------------------------------------------------------------
 
 # Sensors Parser Definition
 sensors_parser = argparse.ArgumentParser(exit_on_error=False)

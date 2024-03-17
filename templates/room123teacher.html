@@ -20,6 +20,18 @@
                 });
             }
 
+            function updateVotes() {
+            fetch('/get-updated-votes')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('votes-yes').innerHTML = '';
+                    document.getElementById('votes-no').innerHTML = '';
+                    // Update the HTML element displaying the temperature
+                    document.getElementById('votes-yes').innerText = data.votes * 100;
+                    document.getElementById('votes-no').innerText = 100 - data.votes * 100;
+                });
+            }
+
 
             function updateAttendanceList() {
                 fetch('/get-attendance-list')
@@ -50,16 +62,19 @@
                     });
                 });
             }
+
     
             // Call updateX function initially
             updateSimTemp();
             updateAttendanceList();
             updatePresences();
+            updateVotes();
     
             // Call updateX function periodically to fetch updated value
             setInterval(updateSimTemp, 3000); // Update every second (adjust as needed)
             setInterval(updateAttendanceList, 3000); // Update every second (adjust as needed)
             setInterval(updatePresences, 3000);
+            setInterval(updateVotes, 3000);
         </script>
     </head>
     <body>
@@ -77,9 +92,21 @@
         </section>
         <section class="room">
             <div class="box" id="teacher-control">
-                <h1>Light Change</h1>
-                <button type="button" name="temp_up" class="hero-btn">UP</button>
-                <button type="button" name="temp_down" class="hero-btn">DOWN</button>
+                <h1>Light Change 1</h1>
+                <button type="button" id="lc0-on" name="l0-on" class="hero-btn">ON</button>
+                <button type="button" id="lc0-off" name="l0-off" class="hero-btn">OFF</button>
+                <h1>Light Change 2</h1>
+                <button type="button" id="lc1-on" name="l1-on" class="hero-btn">ON</button>
+                <button type="button" id="lc1-off" name="l1-off" class="hero-btn">OFF</button>
+                <h1>Light Change 3</h1>
+                <button type="button" id="lc2-on" name="l2-on" class="hero-btn">ON</button>
+                <button type="button" id="lc2-off" name="l2-off" class="hero-btn">OFF</button>
+                <h1>Projector</h1>
+                <button type="button" id="proj-on" name="proj-on" class="hero-btn">ON</button>
+                <button type="button" id="proj-off" name="proj-off" class="hero-btn">OFF</button>
+                <h1>Auto mode</h1>
+                <button type="button" id="auto-on" name="auto-on" class="hero-btn">ON</button>
+                <button type="button" id="auto-off" name="auto-off" class="hero-btn">OFF</button>
                 <h1>Temperature Change (<span id="sim-temp"></span>ºC)</h1>
                 <form action="/update-temperature" method="POST">
                     <input class="input is-normal" type="text" name="teacher_temp" placeholder="Insert in Celsius"></input>
@@ -87,11 +114,11 @@
                 </div>
             </div>
             <div class="box">
-                <h1>Votes for Temperature Increase</h1>
-                <p class="title is-3 is-spaced">49%</p>
-                <h1>Votes for Temperature Decrease</h1>
-                <p class="title is-3 is-spaced">51%</p>
-                <div><button type="button" name="temp_up" class="hero-btn">RESET</button></div>
+                <h1>Vote Yes</h1>
+                <p class="title is-3 is-spaced"><span id="votes-yes"></span>%</p>
+                <h1>Vote No</h1>
+                <p class="title is-3 is-spaced"><span id="votes-no"></span>%</p>
+                <div><button type="button" id="reset-btn" class="hero-btn" onclick="resetVotes">RESET</button></div>
             </div>
             <div class="box">
                 <div class="row">
@@ -110,6 +137,52 @@
         <!-------JavaScript para mostrar menu no telemovel-------->
         <script>
             var navLinks = document.getElementById("navLinks");
+
+            function resetVotes() {
+                 fetch('/reset-votes', {
+                    method: 'POST',
+                }).then(response => {
+                    updateVotes();
+                })
+    
+            }
+            document.getElementById('reset-btn').addEventListener('click', resetVotes);
+
+            function updateLight(light_nr, state) {
+                fetch('/update-light', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        light_nr: light_nr,
+                        state: state
+                    })
+                })
+            }
+
+            function updateProjector(state) {
+                fetch('/update-proj', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        state: state
+                    })
+                })
+            }
+
+            document.getElementById('lc0-on').addEventListener('click', function() {updateLight('0', 'on')});
+            document.getElementById('lc0-off').addEventListener('click', function() {updateLight('0', 'off')});
+            document.getElementById('lc1-on').addEventListener('click', function() {updateLight('1', 'on')});
+            document.getElementById('lc1-off').addEventListener('click', function() {updateLight('1', 'off')});
+            document.getElementById('lc2-on').addEventListener('click', function() {updateLight('2', 'on')});
+            document.getElementById('lc2-off').addEventListener('click', function() {updateLight('2', 'off')});
+            document.getElementById('proj-on').addEventListener('click', function() {updateProjector('on')});
+            document.getElementById('proj-off').addEventListener('click', function() {updateProjector('off')});
+            document.getElementById('auto-on').addEventListener('click', function() {updateLight('9','on')});
+            document.getElementById('auto-off').addEventListener('click', function() {updateLight('9','off')});
         
             function showMenu() {
                 navLinks.style.right = "0";
