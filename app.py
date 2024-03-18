@@ -1,8 +1,9 @@
-from flask import Flask, request, render_template, send_from_directory, redirect, url_for, jsonify
+from flask import Flask, request, render_template, session, send_from_directory, redirect, url_for, jsonify
 import os
 import classroom_controller
 
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 @app.route('/')
 def index():
@@ -21,13 +22,21 @@ def get_simulated_temp():
     temp = classroom_controller.sim_temp
     return jsonify({'temp': temp})
 
+@app.route('/ask-question', methods=['POST'])
+def send_question():
+    print('sending question')
+    if 'question_asked' in request.form:
+        question = request.form['question_asked']
+        classroom_controller.web_command = 'question '+ session["studentID"] + ' ' + question
+        classroom_controller.new_web_command = True
+    return redirect(url_for('room123student'))
+
 @app.route('/update-temperature', methods=['POST'])
 def update_temperature():
     if 'teacher_temp' in request.form:
         new_temp = request.form['teacher_temp']
         classroom_controller.web_command = 'temp '+ new_temp
         classroom_controller.new_web_command = True
-    print(classroom_controller.ideal_temp)
     return redirect(url_for('room123teacher'))
 
 @app.route('/update-light', methods=['POST'])
@@ -53,10 +62,52 @@ def get_updated_votes():
     votes = classroom_controller.get_votes_percent()
     return jsonify({'votes': votes})
 
+@app.route('/get-break-votes')
+def get_break_votes():
+    break_votes = classroom_controller.get_break_votes_percent()
+    return jsonify({'break_votes': break_votes})
+
+@app.route('/vote-temp-increase', methods=['POST'])
+def vote_temp_increase():
+    # Vote to increase temperature
+    classroom_controller.web_command = 'vote ' + session["studentID"] + ' temp+'
+    classroom_controller.new_web_command = True
+    return jsonify({'success': True})
+
+@app.route('/vote-temp-decrease', methods=['POST'])
+def vote_temp_decrease():
+    # Vote to decrease temperature
+    classroom_controller.web_command = 'vote ' + session["studentID"] + ' temp-'
+    classroom_controller.new_web_command = True
+    return jsonify({'success': True})
+
+
+@app.route('/vote-break-poll', methods=['POST'])
+def vote_break_poll():
+    # Reset the poll votes
+    classroom_controller.web_command = 'vote ' + session["studentID"] + ' break'
+    classroom_controller.new_web_command = True
+    return jsonify({'success': True})
+
+@app.route('/vote-poll', methods=['POST'])
+def vote_poll():
+    # Vote to poll
+    classroom_controller.web_command = 'vote ' + session["studentID"] + ' poll'
+    classroom_controller.new_web_command = True
+    return jsonify({'success': True})
+
 @app.route('/reset-votes', methods=['POST'])
 def reset_votes():
     # Reset the votes
-    classroom_controller.web_command = 'vote reset'
+    print(session['studentID'])
+    classroom_controller.web_command = 'vote reset poll'
+    classroom_controller.new_web_command = True
+    return jsonify({'success': True})
+
+@app.route('/reset-break-votes', methods=['POST'])
+def reset_break_votes():
+    # Reset the break votes
+    classroom_controller.web_command = 'vote reset break'
     classroom_controller.new_web_command = True
     return jsonify({'success': True})
 
@@ -64,6 +115,11 @@ def reset_votes():
 def get_attendance_list():
     names = list(classroom_controller.students.values()) 
     return jsonify({'students': names})
+
+@app.route('/get-questions')
+def get_questions():
+    questions = classroom_controller.questions 
+    return jsonify({'questions': questions})
 
 @app.route('/get-presences')
 def get_presences():
@@ -87,6 +143,7 @@ def submit_codes():
     student_id = request.form['student_id']
     print(classroom_code)
     print(student_id)
+    session['studentID'] = student_id
     if classroom_code == '123':
         students_ids = list(classroom_controller.students.keys())
         print(students_ids)

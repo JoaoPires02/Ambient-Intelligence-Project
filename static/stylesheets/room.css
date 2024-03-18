@@ -114,7 +114,7 @@ nav img{
 }
 
 .hero-btn{
-    margin-bottom: 25px;
+    margin-bottom: 30px;
     display: inline-block;
     height: 45px;
     text-decoration: none;
@@ -192,4 +192,9 @@ h3{
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+#questions {
+    max-width: 100%; /* Set the maximum width to 100% of its container */
+    word-wrap: break-word; /* Break long words and wrap text to fit within the container */
 }

@@ -8,7 +8,6 @@
         <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-        <link rel="icon" href="data:;base64,iVBORw0KGgo=">
         <script>
             function updateSimTemp() {
             fetch('/get-simulated-temp')
@@ -20,11 +19,35 @@
                 });
             }
 
+            function updateVotes() {
+            fetch('/get-updated-votes')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('votes-yes').innerHTML = '';
+                    // Update the HTML element displaying the temperature
+                    document.getElementById('votes-yes').innerText = data.votes * 100;
+                });
+            }
+
+            function updateBreakVotes() {
+            fetch('/get-break-votes')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('votes-break').innerHTML = '';
+                    // Update the HTML element displaying the temperature
+                    document.getElementById('votes-break').innerText = data.break_votes * 100;
+                });
+            }
+
             // Call updateX function initially
             updateSimTemp();
+            updateVotes();
+            updateBreakVotes();
 
             // Call updateX function periodically to fetch updated value
             setInterval(updateSimTemp, 3000); // Update every second (adjust as needed)
+            setInterval(updateVotes, 3000);
+            setInterval(updateBreakVotes, 3000);
 
         </script>
     </head>
@@ -43,19 +66,27 @@
         </section>
         <section class="room">
             <div class="box">
-                <h1>Break Time</h1>
-                <button type="button" name="ask_break" class="hero-btn">ASK</button>
                 <h1>Temperature Change (<span id="sim-temp"></span>ºC)</h1>
-                <button type="button" name="temp_up" class="hero-btn">INCREASE</button>
-                <button type="button" name="temp_down" class="hero-btn">DECREASE</button>
+                <button type="button" id="votes-temp-up-btn" name="temp_up" class="hero-btn">INCREASE</button>
+                <button type="button" id="votes-temp-down-btn" name="temp_down" class="hero-btn">DECREASE</button>
+            </div>
+            <div class="box">
+                <div>
+                    <h1>Vote Pause Break</h1>
+                    <p class="title is-3"><span id="votes-break"></span>%</p>
+                    <button type="button" id="votes-break-btn" class="hero-btn" onclick="voteBreakPoll">VOTE</button>
+                </div>
+                <div>
+                    <h1>Poll Votes</h1>
+                    <p class="title is-3"><span id="votes-yes"></span>%</p>
+                    <button type="button" id="votes-yes-btn" class="hero-btn" onclick="votePoll">VOTE</button>
+                </div>
             </div>
             <div class="box" id="student-feed">
                 <h1>Ask a question or give feedback</h1>
-                <form action="/ask_question" method="POST">
-                    <div><textarea name="question_asked" placeholder="Type your question here..."></textarea></div>
-                    <div>
-                        <button type="submit" class="hero-btn">SEND</button>
-                    </div>
+                <form action="/ask-question" method="POST">
+                    <textarea name="question_asked" placeholder="Type your question here..."></textarea>
+                    <button type="submit" name="send_question" class="hero-btn">SEND</button>
                 </form>
             </div>
         </section>
@@ -63,6 +94,38 @@
         <!-------JavaScript para mostrar menu no telemovel-------->
         <script>
             var navLinks = document.getElementById("navLinks");
+
+            function voteTempIncrease() {
+                 fetch('/vote-temp-increase', {
+                    method: 'POST',
+                })
+            }
+
+            function voteTempDecrease() {
+                 fetch('/vote-temp-decrease', {
+                    method: 'POST',
+                })
+            }
+
+            function voteBreakPoll() {
+                 fetch('/vote-break-poll', {
+                    method: 'POST',
+                }).then(response => {
+                    updateBreakVotes();
+                })
+            }
+
+            function votePoll() {
+                 fetch('/vote-poll', {
+                    method: 'POST',
+                }).then(response => {
+                    updateVotes();
+                })
+            }
+            document.getElementById('votes-temp-up-btn').addEventListener('click', voteTempIncrease);
+            document.getElementById('votes-temp-down-btn').addEventListener('click', voteTempDecrease);
+            document.getElementById('votes-break-btn').addEventListener('click', voteBreakPoll);
+            document.getElementById('votes-yes-btn').addEventListener('click', votePoll);
         
             function showMenu() {
                 navLinks.style.right = "0";

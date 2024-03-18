@@ -8,7 +8,6 @@
         <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-        <link rel="icon" href="data:;base64,iVBORw0KGgo=">
         <script>
             function updateSimTemp() {
             fetch('/get-simulated-temp')
@@ -25,10 +24,33 @@
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('votes-yes').innerHTML = '';
-                    document.getElementById('votes-no').innerHTML = '';
                     // Update the HTML element displaying the temperature
                     document.getElementById('votes-yes').innerText = data.votes * 100;
-                    document.getElementById('votes-no').innerText = 100 - data.votes * 100;
+                });
+            }
+
+            function updateBreakVotes() {
+            fetch('/get-break-votes')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('votes-break').innerHTML = '';
+                    // Update the HTML element displaying the temperature
+                    document.getElementById('votes-break').innerText = data.break_votes * 100;
+                });
+            }
+
+            function updateQuestions() {
+                fetch('/get-questions')
+                .then(response => response.json())
+                .then(data => {
+                    // Clear the previous student names
+                    document.getElementById('questions').innerHTML = '';
+                    // Iterate through the student names and create HTML elements
+                    data.questions.forEach(question => {
+                        const questionElement = document.createElement('p');
+                        questionElement.textContent = question;
+                        document.getElementById('questions').appendChild(questionElement);
+                    });
                 });
             }
 
@@ -69,12 +91,16 @@
             updateAttendanceList();
             updatePresences();
             updateVotes();
+            updateBreakVotes();
+            updateQuestions();
     
             // Call updateX function periodically to fetch updated value
             setInterval(updateSimTemp, 3000); // Update every second (adjust as needed)
             setInterval(updateAttendanceList, 3000); // Update every second (adjust as needed)
             setInterval(updatePresences, 3000);
             setInterval(updateVotes, 3000);
+            setInterval(updateBreakVotes, 3000);
+            setInterval(updateQuestions, 3000);
         </script>
     </head>
     <body>
@@ -114,11 +140,16 @@
                 </div>
             </div>
             <div class="box">
-                <h1>Vote Yes</h1>
+                <h1>Break Votes</h1>
+                <p class="title is-3 is-spaced"><span id="votes-break"></span>%</p>
+                <div><button type="button" id="reset-break-btn" class="hero-btn" onclick="resetBreakVotes">RESET</button></div>
+                <h1>Poll Votes</h1>
                 <p class="title is-3 is-spaced"><span id="votes-yes"></span>%</p>
-                <h1>Vote No</h1>
-                <p class="title is-3 is-spaced"><span id="votes-no"></span>%</p>
                 <div><button type="button" id="reset-btn" class="hero-btn" onclick="resetVotes">RESET</button></div>
+                <div class="row">
+                    <h2>Questions</h2>
+                    <p><span id="questions"></span></p>
+                </div>
             </div>
             <div class="box">
                 <div class="row">
@@ -146,7 +177,17 @@
                 })
     
             }
+
+            function resetBreakVotes() {
+                 fetch('/reset-break-votes', {
+                    method: 'POST',
+                }).then(response => {
+                    updateBreakVotes();
+                })
+    
+            }
             document.getElementById('reset-btn').addEventListener('click', resetVotes);
+            document.getElementById('reset-break-btn').addEventListener('click', resetBreakVotes);
 
             function updateLight(light_nr, state) {
                 fetch('/update-light', {
