@@ -11,6 +11,7 @@ PROJ = 2
 BUTTON = 2
 GET = 3
 VOTE = 4
+QUESTION = 5
 
 LIGHT_IO = [18, 23, 24]
 PROJ_IO = 25
@@ -48,6 +49,10 @@ web_command = ''
 new_web_command = False
 
 votes = [False, False, False, False]
+break_votes = [False, False, False, False]
+temp_votes = [0, 0, 0 ,0]
+
+questions = []
 
 def get_votes_percent():
     global votes
@@ -58,9 +63,27 @@ def get_votes_percent():
     return total / len(votes)
 
 def reset_votes():
-    global votes
+    global break_votes
     for i in range(len(votes)):
         votes[i] = False
+
+def get_break_votes_percent():
+    global votes
+    total = 0
+    for e in break_votes:
+        if e: total += 1
+    
+    return total / len(votes)
+
+def reset_break_votes():
+    global break_votes
+    for i in range(len(break_votes)):
+        break_votes[i] = False
+
+def reset_temp_votes():
+    global temp_votes
+    for i in range(len(temp_votes)):
+        temp_votes[i] = 0
 
 def get_light_intensity(n):
     brightness = current_light_level[n]
@@ -118,10 +141,37 @@ def get_info(arg):
         print('Light 1: ' + str(current_light_level[1]))
         print('Light 2: ' + str(current_light_level[2]))
 
-def student_vote(id):
+def student_vote(id, type):
+    if id == 'reset':
+        if type == 'poll':
+            reset_votes()
+        elif type == 'break':
+            reset_break_votes()
+        elif type == 'temp+' or type == 'temp-':
+            reset_temp_votes()
+        return
+
     index = list(students.keys()).index(id)
-    votes[index] = True
-    print(votes)
+    if type == 'poll':
+        votes[index] = True
+        print(votes)
+
+    elif type == 'break':
+        break_votes[index] = True
+        print(break_votes)
+
+    elif type == 'temp+':
+        temp_votes[index] = 1
+        print(temp_votes)
+
+    elif type == 'temp-':
+        temp_votes[index] = -1
+        print(temp_votes)
+
+def new_question(id, question):
+    global questions
+    questions.append('From ' + students[id] + ':\n' + question)
+    print(questions)
 
 def manual_commands():
     while True:
@@ -140,10 +190,10 @@ def manual_commands():
                 get_info(command[1])
 
             elif command[0] == VOTE:
-                if command[1] == 'reset':
-                    reset_votes()
-                else:
-                    student_vote(command[1])
+                student_vote(command[1], command[2])
+
+            elif command[0] == QUESTION:
+                new_question(command[1], command[2])
 
         except Exception as e:
             print('Manual Command Error')
@@ -170,9 +220,15 @@ def web_commands():
 
                 elif command[0] == VOTE:
                     if command[1] == 'reset':
-                        reset_votes()
+                        if command[2] == 'poll':
+                            reset_votes()
+                        elif command[2] == 'break':
+                            reset_break_votes()
                     else:
-                        student_vote(command[1])
+                        student_vote(command[1], command[2])
+
+                elif command[0] == QUESTION:
+                    new_question(command[1], command[2])
 
             except Exception as e:
                 print('Web Command Error')
@@ -259,6 +315,20 @@ def light_control():
         
         else:
             pass
+
+def temp_votes_management():
+    global ideal_temp
+    while True:
+        voting = sum(temp_votes)
+        if voting >= len(temp_votes) / 2:
+            ideal_temp += 1
+            reset_temp_votes()
+        elif voting <= -(len(temp_votes) / 2):
+            ideal_temp -= 1
+            reset_temp_votes()
+        else:
+            pass
+        time.sleep(1)
             
 
 commands_thread = threading.Thread(target=manual_commands, name='Thread 1')
@@ -267,6 +337,7 @@ update_temp_thread = threading.Thread(target=update_sim_temp, name='Thread 3')
 lcd_thread = threading.Thread(target=lcd_manager, name='Thread 4')
 light_control_thread = threading.Thread(target=light_control, name='Thread 5')
 web_commands_thread = threading.Thread(target=web_commands, name='Thread 6')
+temp_votes_thread = threading.Thread(target=temp_votes_management, name='Thread 6')
 
 commands_thread.start()
 sensors_thread.start()
@@ -274,5 +345,6 @@ update_temp_thread.start()
 lcd_thread.start()
 light_control_thread.start()
 web_commands_thread.start()
+temp_votes_thread.start()
 
     

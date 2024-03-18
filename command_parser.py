@@ -3,7 +3,7 @@ import argparse
 # Main parser definition:
 parser = argparse.ArgumentParser(exit_on_error=False)
 
-possible_commands = ['temp', 'light', 'proj', 'get', 'vote']
+possible_commands = ['temp', 'light', 'proj', 'get', 'vote', 'question']
 parser.add_argument('command', type=str, choices = possible_commands,
                     help='Command to be executed')
 parser.add_argument('args', type=str,
@@ -41,6 +41,17 @@ vote_parser = argparse.ArgumentParser(exit_on_error=False)
 
 vote_parser.add_argument('student', type=str,
                         help='Student number')
+voting_types = ['poll', 'break', 'temp+', 'temp-']
+vote_parser.add_argument('type', type=str, choices=voting_types,
+                        help='What are you voting for')
+
+# Question parser definition:
+question_parser = argparse.ArgumentParser(exit_on_error=False)
+
+question_parser.add_argument('student', type=str,
+                        help='Student number')
+question_parser.add_argument('question', type=str,
+                        help='Question itself')
 
 
 def execute_command(command, args):
@@ -77,7 +88,14 @@ def execute_command(command, args):
             args = vote_parser.parse_args(args.split(' '))
         except argparse.ArgumentError as e:
             print("Error:", e)
-        return (4, args.student)
+        return (4, args.student, args.type)
+    
+    elif command == 'question':
+        try:
+            args = question_parser.parse_args(args.split(' ', 1))
+        except argparse.ArgumentError as e:
+            print("Error:", e)
+        return (5, args.student, args.question)
     
 def read_command():
     raw_arg = input('> ').split(' ', 1)
@@ -137,7 +155,7 @@ button_parser.add_argument('button_n', type=int,
                     help='Number of the button pressed')
 
 
-def read_sensor_info(msg):
+def read_sensor_info(msg):  
     raw_arg = msg.split(' ', 1)
     args = sensors_parser.parse_args(raw_arg)
     sensor = args.sensor
