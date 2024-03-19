@@ -92,9 +92,9 @@ def get_light_intensity(n):
     elif brightness >= 200 and brightness < 300:
         return 80
     elif brightness >= 300 and brightness < 400:
-        return 50
-    elif brightness >= 400 and brightness < 500:
-        return 30
+        return 60
+    elif brightness >= 400 and brightness < 700:
+        return 20
     else:
         return 0
 
@@ -266,7 +266,7 @@ def update_sim_temp():
         elif sim_temp > ideal_temp:
             sim_temp -= 0.1
         sim_temp = float(format(sim_temp, '.1f'))
-        time.sleep(1)
+        time.sleep(2)
 
 def lcd_manager():
     lcd.clear()

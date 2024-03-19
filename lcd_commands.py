@@ -28,7 +28,7 @@ def init_lcd():
     lcd.cursor_pos = (0, 0)
     lcd.write_string('Measuring...')
     lcd.cursor_pos = (1, 0)
-    lcd.write_string('Room Code: RX5v')
+    lcd.write_string('Room Code: 123')
 
 def update_lcd(real_temp, ideal_temp, sim_temp):
     real_temp = str(format(real_temp, '.1f'))

@@ -166,6 +166,8 @@ def read_sensor_info(msg):
         return (0, args.value, args.sensor_n)
     elif sensor == 'L':
         args = light_sensor_parser.parse_args(args.split(' '))
+        if args.sensor_n == 2:
+            return (1, 1.6*args.value, args.sensor_n)
         return (1, args.value, args.sensor_n)
     elif sensor == 'B':
         args = button_parser.parse_args(args.split(' '))
