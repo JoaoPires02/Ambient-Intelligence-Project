@@ -141,22 +141,21 @@ def favicon():
 def submit_codes():
     classroom_code = request.form['classroom_code']
     student_id = request.form['student_id']
-    print(classroom_code)
-    print(student_id)
     session['studentID'] = student_id
+    students_ids = list(classroom_controller.students.keys())
     if classroom_code == '123':
-        students_ids = list(classroom_controller.students.keys())
-        print(students_ids)
-        print(student_id)
         if student_id in students_ids:
             ind = students_ids.index(student_id)
             classroom_controller.student_present[ind] = True
             return redirect(url_for('room123student'))
         elif student_id == 't':
             return redirect(url_for('room123teacher'))
+        else:
+            return render_template('index2.html', invalid_student_id=True)
+    elif student_id in students_ids:
+        return render_template('index2.html', invalid_classroom_code=True)
     else:
-        # Redirect to some other page if the classroom code is not 12345
-        return redirect(url_for('index'))
+        return render_template('index2.html', invalid_classroom_code=True, invalid_student_id=True)
 
 
 if __name__ == '__main__':

@@ -119,20 +119,20 @@
         <section class="room">
             <div class="box" id="teacher-control">
                 <h1>Light Change 1</h1>
-                <button type="button" id="lc0-on" name="l0-on" class="hero-btn">ON</button>
-                <button type="button" id="lc0-off" name="l0-off" class="hero-btn">OFF</button>
+                <button type="button" id="lc0-on" name="l0-on" class="hero-btn toggle-btn" data-pair="lc0">ON</button>
+                <button type="button" id="lc0-off" name="l0-off" class="hero-btn toggle-btn" data-pair="lc0">OFF</button>
                 <h1>Light Change 2</h1>
-                <button type="button" id="lc1-on" name="l1-on" class="hero-btn">ON</button>
-                <button type="button" id="lc1-off" name="l1-off" class="hero-btn">OFF</button>
+                <button type="button" id="lc1-on" name="l1-on" class="hero-btn toggle-btn" data-pair="lc1">ON</button>
+                <button type="button" id="lc1-off" name="l1-off" class="hero-btn toggle-btn" data-pair="lc1">OFF</button>
                 <h1>Light Change 3</h1>
-                <button type="button" id="lc2-on" name="l2-on" class="hero-btn">ON</button>
-                <button type="button" id="lc2-off" name="l2-off" class="hero-btn">OFF</button>
+                <button type="button" id="lc2-on" name="l2-on" class="hero-btn toggle-btn" data-pair="lc2">ON</button>
+                <button type="button" id="lc2-off" name="l2-off" class="hero-btn toggle-btn" data-pair="lc2">OFF</button>
                 <h1>Projector</h1>
-                <button type="button" id="proj-on" name="proj-on" class="hero-btn">ON</button>
-                <button type="button" id="proj-off" name="proj-off" class="hero-btn">OFF</button>
+                <button type="button" id="proj-on" name="proj-on" class="hero-btn toggle-btn" data-pair="lcproj">ON</button>
+                <button type="button" id="proj-off" name="proj-off" class="hero-btn toggle-btn" data-pair="lcproj">OFF</button>
                 <h1>Auto mode</h1>
-                <button type="button" id="auto-on" name="auto-on" class="hero-btn">ON</button>
-                <button type="button" id="auto-off" name="auto-off" class="hero-btn">OFF</button>
+                <button type="button" id="auto-on" name="auto-on" class="hero-btn toggle-btn" data-pair="autopair">ON</button>
+                <button type="button" id="auto-off" name="auto-off" class="hero-btn toggle-btn" data-pair="autopair">OFF</button>
                 <h1>Temperature Change (<span id="sim-temp"></span>ºC)</h1>
                 <form action="/update-temperature" method="POST">
                     <input class="input is-normal" type="text" name="teacher_temp" placeholder="Insert in Celsius"></input>
@@ -165,7 +165,7 @@
             </div>
         </section>
         
-        <!-------JavaScript para mostrar menu no telemovel-------->
+        <!-------JavaScript-------->
         <script>
             var navLinks = document.getElementById("navLinks");
 
@@ -224,6 +224,25 @@
             document.getElementById('proj-off').addEventListener('click', function() {updateProjector('off')});
             document.getElementById('auto-on').addEventListener('click', function() {updateLight('9','on')});
             document.getElementById('auto-off').addEventListener('click', function() {updateLight('9','off')});
+
+            // Get all toggle buttons
+            const toggleButtons = document.querySelectorAll('.toggle-btn');
+
+            // Add click event listener to each toggle button
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Get the pair identifier
+                    const pairId = button.dataset.pair;
+                    // Remove 'active' class from all toggle buttons with the same pair identifier
+                    toggleButtons.forEach(btn => {
+                        if (btn.dataset.pair === pairId) {
+                            btn.classList.remove('active');
+                        }
+                    });
+                    // Add 'active' class to the clicked button
+                    button.classList.add('active');
+                });
+            });
         
             function showMenu() {
                 navLinks.style.right = "0";
@@ -233,26 +252,6 @@
                 navLinks.style.right = "-200px";
             }
         
-            // Smooth scroll function
-            function scrollToSection(sectionId) {
-                var section = document.getElementById(sectionId);
-                if (section) {
-                    window.scrollTo({
-                        top: section.offsetTop,
-                        behavior: "smooth"
-                    });
-                }
-            }
-        
-            // Add an event listener for each navigation link
-            var navigationLinks = document.querySelectorAll('.nav-links ul li a');
-            navigationLinks.forEach(function(link) {
-                link.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    var sectionId = link.getAttribute('href').substring(1); // Remove the # from the href
-                    scrollToSection(sectionId);
-                });
-            });
         </script>
     </body>
 </html>

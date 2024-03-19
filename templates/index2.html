@@ -8,7 +8,6 @@
         <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-        <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     </head>
     <body>
         <section class="header">
@@ -27,8 +26,15 @@
             <h1>WHERE IS YOUR CLASS?</h1>
             <p>Insert your class credentials.</p>
             <form id="form-login" action="/submit-codes" method="POST">
-                <div><input class="input is-small" type="text" name="classroom_code" placeholder="Enter Classroom Code"></div>
-                <div><input class="input is-small" type="text" name="student_id" placeholder="Enter Student ID"></div>
+                <div><input class="input is-small {% if invalid_classroom_code %}is-danger{% endif %}" type="text" name="classroom_code" placeholder="Enter Classroom Code"></div>
+                <div><input class="input is-small {% if invalid_student_id %}is-danger{% endif %}" type="text" name="student_id" placeholder="Enter Student ID"></div>
+                {% if invalid_classroom_code or invalid_student_id %}
+                <div class="help is-danger is-small">
+                    {% if invalid_classroom_code and not invalid_student_id%} Invalid classroom code.{% endif %}
+                    {% if invalid_student_id and not invalid_classroom_code%} Invalid ID.{% endif %}
+                    {% if invalid_classroom_code and invalid_student_id %} Invalid classroom code and ID.{% endif %}
+                </div>
+                {% endif %}
                 <div>
                     <button type="submit" class="hero-btn">CONFIRM</button>
                 </div>
@@ -47,26 +53,6 @@
                 navLinks.style.right = "-200px";
             }
         
-            // Smooth scroll function
-            function scrollToSection(sectionId) {
-                var section = document.getElementById(sectionId);
-                if (section) {
-                    window.scrollTo({
-                        top: section.offsetTop,
-                        behavior: "smooth"
-                    });
-                }
-            }
-        
-            // Add an event listener for each navigation link
-            var navigationLinks = document.querySelectorAll('.nav-links ul li a');
-            navigationLinks.forEach(function(link) {
-                link.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    var sectionId = link.getAttribute('href').substring(1); // Remove the # from the href
-                    scrollToSection(sectionId);
-                });
-            });
         </script>
     </body>
 </html>

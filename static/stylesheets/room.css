@@ -198,3 +198,9 @@ h3{
     max-width: 100%; /* Set the maximum width to 100% of its container */
     word-wrap: break-word; /* Break long words and wrap text to fit within the container */
 }
+
+.toggle-btn.active {
+    border: 1px solid #00a0e4;
+    background: #00a0e4;
+    color: white;
+}
