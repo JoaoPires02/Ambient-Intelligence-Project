@@ -36,7 +36,7 @@ def update_lcd(real_temp, ideal_temp, sim_temp):
     sim_temp = str(format(sim_temp, '.1f'))
 
     lcd.cursor_pos = (0, 0)
-    lcd.write_string(real_temp + '-' + ideal_temp + '-' + sim_temp)
+    lcd.write_string(real_temp + '/' + ideal_temp + '/' + sim_temp)
 
 def close_lcd():
     lcd.close(clear=True)
