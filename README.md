@@ -91,7 +91,7 @@ If everything is setup correctly, the link for the web application will be writt
 ## Demo
 
 Upon opening the app's link in the browser, the user is redirected to the log in screen:
-<img src="images/login-screen.png" alt="drawing" width="500"/>
+<img src="images/login-screen.png" alt="drawing" width="800"/>
 Here, the user should type the room code, written in the lcd display and their identification number, being the student number for the students (example: '99090') or 't' for the teacher.
 
 <img src="images/lcd-picture.jpg" alt="drawing" width="500"/>
@@ -108,14 +108,14 @@ When logged in as the teacher, the user has many different options:
 - Reset the break and poll votes.
 - Read student's questions.
 - See the list of presences.
-<img src="images/teacher-page.png" alt="drawing" width="500"/>
+<img src="images/teacher-page.png" alt="drawing" width="800"/>
 
 When logged in as a student, there are different options:
 - Vote to increase or decrease the room temperature.
 - Vote for a break.
 - Vote for a poll.
 - Ask a question that only the teacher can see.
-<img src="images/student-page.png" alt="drawing" width="500"/>
+<img src="images/student-page.png" alt="drawing" width="800"/>
 
 ## Deployment
 
