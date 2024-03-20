@@ -9,16 +9,17 @@
     width: 100%;
     background-color: #ffffff;
     position: fixed;
-    padding: 10px 6px; /* Adjust the padding as needed */
-    height: 60px; /* Adjust the height as needed */
+    padding: 10px 6px; 
+    height: 70px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 }
 nav{
     display: flex;
     padding: 1% 6%;
     justify-content: space-between;
     align-items: center;
-    height: 100%; /* Ensure navigation fills the entire height of the header */
-    padding: 0 100px; /* Add padding to the left and right to space out navigation elements */
+    height: 100%; 
+    padding: 0 100px; 
 }
 nav img{
     width: 50px;

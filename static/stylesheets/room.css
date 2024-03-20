@@ -9,17 +9,18 @@
     width: 100%;
     background-color: #ffffff;
     position: fixed;
-    padding: 10px 6px; /* Adjust the padding as needed */
-    height: 60px; /* Adjust the height as needed */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow to the bottom border */
+    padding: 10px 6px; 
+    height: 70px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    
 }
 nav{
     display: flex;
     padding: 1% 6%;
     justify-content: space-between;
     align-items: center;
-    height: 100%; /* Ensure navigation fills the entire height of the header */
-    padding: 0 100px; /* Add padding to the left and right to space out navigation elements */
+    height: 100%; 
+    padding: 0 100px; 
 }
 nav img{
     width: 50px;
@@ -53,14 +54,14 @@ nav img{
 
 .welcome {
     position: fixed;
-    top: 90px; /* Adjust based on your header height */
+    top: 90px; 
     left: 0;
     width: 100%;
-    padding: 20px 0; /* Adjust padding as needed */
+    padding: 20px 0; 
     text-align: center;
-    z-index: 99; /* Ensure the "Welcome" section appears above other content */
-    font-size: 40px; /* Adjust font size as needed */
-    font-weight: bold; /* Ensure text is bold */
+    z-index: 99; 
+    font-size: 40px; 
+    font-weight: bold; 
 }
 
 .room{
@@ -81,25 +82,25 @@ nav img{
 
 .box {
     margin: 20px;
-    min-height: 30vh; /* Set minimum height to 30% of the viewport height */
-    width: 30%; /* Set width to 80% of the parent container */
+    min-height: 30vh; 
+    width: 30%; 
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 10px;
 }
 
 #student-feed textarea {
-    width: 100%; /* Set the width to 100% to fill the available space */
-    min-height: 100px; /* Set a minimum height for the textarea */
-    padding: 10px; /* Add padding to the textarea */
-    font-size: 16px; /* Adjust the font size as needed */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    width: 100%; 
+    min-height: 100px; 
+    padding: 10px; 
+    font-size: 16px; 
+    box-sizing: border-box; 
     resize: none;
 }
 
 #student-feed select {
-    height: 45px; /* Set the height to match the button */
-    vertical-align: middle; /* Align elements vertically */
+    height: 45px; 
+    vertical-align: middle; 
 }
 
 #teacher-control input {
@@ -209,14 +210,14 @@ h3{
 }
 
 #attendance-list {
-    max-width: 200px; /* Adjust as needed */
+    max-width: 200px; 
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 }
 
 #questions {
-    max-width: 100%; /* Set the maximum width to 100% of its container */
+    max-width: 100%; 
     word-wrap: break-word; /* Break long words and wrap text to fit within the container */
 }
 
