@@ -51,6 +51,18 @@ nav img{
     width: 100%;
 }
 
+.welcome {
+    position: fixed;
+    top: 90px; /* Adjust based on your header height */
+    left: 0;
+    width: 100%;
+    padding: 20px 0; /* Adjust padding as needed */
+    text-align: center;
+    z-index: 99; /* Ensure the "Welcome" section appears above other content */
+    font-size: 40px; /* Adjust font size as needed */
+    font-weight: bold; /* Ensure text is bold */
+}
+
 .room{
     z-index: 1;
     min-height: 100vh;
@@ -63,6 +75,7 @@ nav img{
     background-color: #f0f4f4;
     background-position: center;
     background-size: cover;
+    top: 60px;
 }
 
 

@@ -39,6 +39,16 @@
                 });
             }
 
+            function updateStudentsPresent() {
+            fetch('/get-number-students-present')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('number-present').innerHTML = '';
+                    // Update the HTML element displaying the temperature
+                    document.getElementById('number-present').innerText = data.n_present;
+                });
+            }
+
             function updateQuestions() {
                 fetch('/get-questions')
                 .then(response => response.json())
@@ -85,13 +95,13 @@
                 });
             }
 
-    
             // Call updateX function initially
             updateSimTemp();
             updateAttendanceList();
             updatePresences();
             updateVotes();
             updateBreakVotes();
+            updateStudentsPresent();
             updateQuestions();
     
             // Call updateX function periodically to fetch updated value
@@ -100,6 +110,7 @@
             setInterval(updatePresences, 3000);
             setInterval(updateVotes, 3000);
             setInterval(updateBreakVotes, 3000);
+            setInterval(updateStudentsPresent, 3000);
             setInterval(updateQuestions, 3000);
         </script>
     </head>
@@ -110,7 +121,7 @@
                 <div class="nav-links" id="navLinks">
                     <i class="fa fa-times" onclick="hideMenu()"></i>
                     <ul>
-                        <li><a href="#fenix">FENIX</a></li>
+                        <li><a href="https://fenix.tecnico.ulisboa.pt/" target="_blank">FENIX</a></li>
                     </ul>
                 </div>
                 <i class="fa fa-bars" onclick="showMenu()""></i>
@@ -162,6 +173,8 @@
                         <p><span id="presences"></span></p>
                     </div>
                 </div>
+                <h1>Number of students present</h1>
+                <p class="title is-3 is-spaced"><span id="number-present"></span></p>
             </div>
         </section>
         
@@ -225,10 +238,8 @@
             document.getElementById('auto-on').addEventListener('click', function() {updateLight('9','on')});
             document.getElementById('auto-off').addEventListener('click', function() {updateLight('9','off')});
 
-            // Get all toggle buttons
             const toggleButtons = document.querySelectorAll('.toggle-btn');
 
-            // Add click event listener to each toggle button
             toggleButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     // Get the pair identifier

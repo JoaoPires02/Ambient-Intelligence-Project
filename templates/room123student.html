@@ -58,15 +58,17 @@
                 <div class="nav-links" id="navLinks">
                     <i class="fa fa-times" onclick="hideMenu()"></i>
                     <ul>
-                        <li><a href="#fenix">FENIX</a></li>
+                        <li><a href="https://fenix.tecnico.ulisboa.pt/" target="_blank">FENIX</a></li>
                     </ul>
                 </div>
                 <i class="fa fa-bars" onclick="showMenu()""></i>
             </nav>
         </section>
+        {% if student_id %}<section class="welcome"><h1>Welcome {{ student_id }}!</h1></section>{% endif %}
         <section class="room">
             <div class="box">
-                <h1>Temperature Change (<span id="sim-temp"></span>ºC)</h1>
+                <h1>Temperature Change</h1>
+                <p class="title is-3 is-spaced"><span id="sim-temp"></span>ºC</p>
                 <button type="button" id="votes-temp-up-btn" name="temp_up" class="hero-btn">INCREASE</button>
                 <button type="button" id="votes-temp-down-btn" name="temp_down" class="hero-btn">DECREASE</button>
             </div>

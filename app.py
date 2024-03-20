@@ -11,7 +11,7 @@ def index():
 
 @app.route('/room123student')
 def room123student():
-    return render_template('room123student.html')
+    return render_template('room123student.html',student_id=classroom_controller.students[session["studentID"]])
 
 @app.route('/room123teacher')
 def room123teacher():
@@ -69,6 +69,12 @@ def get_updated_votes():
 def get_break_votes():
     break_votes = classroom_controller.get_break_votes_percent()
     return jsonify({'break_votes': break_votes})
+
+@app.route('/get-number-students-present')
+def get_number_students_present():
+    n_present = classroom_controller.student_present.count(True)
+    return jsonify({'n_present': n_present})
+
 
 @app.route('/vote-temp-increase', methods=['POST'])
 def vote_temp_increase():
