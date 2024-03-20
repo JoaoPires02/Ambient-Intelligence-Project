@@ -54,6 +54,7 @@ The circuit consists of 2 different kinds of sections.
 For this project we will be using 1 teacher section, 2 student sections and 1 lcd display, but it's worth to mention that more sections can easily be added.
 The arduino and raspberry pi should be connected through usb.
 This project is meant to be run on the raspberry pi.
+Additionally, the arduino must be running the code in arduino/send-serial.ino
 
 
 
@@ -114,7 +115,7 @@ When logged in as a student, there are different options:
 - Vote to increase or decrease the room temperature.
 - Vote for a break.
 - Vote for a poll.
-- Ask a question that only the teacher can see.
+- Ask a question that only the teacher can see, anonymously or not.
 <img src="images/student-page.png" alt="drawing" width="800"/>
 
 ## Deployment
