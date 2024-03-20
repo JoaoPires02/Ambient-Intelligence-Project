@@ -59,8 +59,10 @@ def get_votes_percent():
     total = 0
     for e in votes:
         if e: total += 1
-    
-    return total / len(votes)
+    n_present = student_present.count(True)
+    if n_present == 0:
+        return 0
+    return round(total / n_present, 2)
 
 def reset_votes():
     global break_votes
@@ -72,8 +74,10 @@ def get_break_votes_percent():
     total = 0
     for e in break_votes:
         if e: total += 1
-    
-    return total / len(votes)
+    n_present = student_present.count(True)
+    if n_present == 0:
+        return 0
+    return round(total / n_present, 2)
 
 def reset_break_votes():
     global break_votes
