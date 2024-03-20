@@ -24,10 +24,13 @@ def get_simulated_temp():
 
 @app.route('/ask-question', methods=['POST'])
 def send_question():
-    print('sending question')
     if 'question_asked' in request.form:
         question = request.form['question_asked']
-        classroom_controller.web_command = 'question '+ session["studentID"] + ' ' + question
+        sender = request.form['sender_select']
+        if sender == "non_anonymous":
+            classroom_controller.web_command = 'question '+ session["studentID"] + ' ' + question
+        elif sender == "anonymous":
+            classroom_controller.web_command = 'question '+ "Anonymous" + ' ' + question
         classroom_controller.new_web_command = True
     return redirect(url_for('room123student'))
 

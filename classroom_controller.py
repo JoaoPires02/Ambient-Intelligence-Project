@@ -170,7 +170,10 @@ def student_vote(id, type):
 
 def new_question(id, question):
     global questions
-    questions.append('From ' + students[id] + ':\n' + question)
+    if id == "Anonymous":
+        questions.append('From ' + id + ':\n' + question)
+    else:
+        questions.append('From ' + students[id] + ':\n' + question)
     print(questions)
 
 def manual_commands():

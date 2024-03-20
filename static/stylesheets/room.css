@@ -69,7 +69,6 @@ nav img{
 .box {
     margin: 20px;
     min-height: 30vh; /* Set minimum height to 30% of the viewport height */
-    max-height: 70vh; /* Set maximum height to 70% of the viewport height */
     width: 30%; /* Set width to 80% of the parent container */
     padding: 20px;
     border: 1px solid #ccc;
@@ -85,10 +84,19 @@ nav img{
     resize: none;
 }
 
+#student-feed select {
+    height: 45px; /* Set the height to match the button */
+    vertical-align: middle; /* Align elements vertically */
+}
+
 #teacher-control input {
     width: 50%;
     display: inline-block;
     height: 45px;
+}
+
+#teacher-control {
+    min-width: 150px;
 }
 
 .column {

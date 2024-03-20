@@ -86,6 +86,12 @@
                 <h1>Ask a question or give feedback</h1>
                 <form action="/ask-question" method="POST">
                     <textarea name="question_asked" placeholder="Type your question here..."></textarea>
+                    <div class="select is-black">
+                        <select name="sender_select">
+                          <option value="non_anonymous">Non-anonymous</option>
+                          <option value="anonymous">Anonymous</option>
+                        </select>
+                      </div>
                     <button type="submit" name="send_question" class="hero-btn">SEND</button>
                 </form>
             </div>
