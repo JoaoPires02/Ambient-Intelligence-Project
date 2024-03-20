@@ -35,7 +35,7 @@ students = {'99090':'João Pires',
 
 student_present = [False, False, False, False] #Only IDs
 
-sim_temp = 20
+sim_temp = 22
 ideal_temp = 22
 current_temp = [0, 0]
 current_light_level = [0, 0, 0]
@@ -326,11 +326,17 @@ def light_control():
 def temp_votes_management():
     global ideal_temp
     while True:
-        voting = sum(temp_votes)
-        if voting >= len(temp_votes) / 2:
+        voting = 0
+        presences = 0
+        for i in range(len(temp_votes)):
+            if student_present[i]:
+                presences += 1
+                voting += temp_votes[i]
+
+        if voting >= presences / 2 and presences > 0:
             ideal_temp += 1
             reset_temp_votes()
-        elif voting <= -(len(temp_votes) / 2):
+        elif voting <= -presences / 2 and presences > 0:
             ideal_temp -= 1
             reset_temp_votes()
         else:
